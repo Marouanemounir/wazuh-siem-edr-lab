@@ -1,88 +1,98 @@
-# 🛡️ Wazuh SIEM & EDR Lab – Endpoint Security (Linux & Windows)
+# 🛡️ Wazuh SIEM & EDR Lab – Sécurité des Endpoints (Linux & Windows)
 
 ## 📌 Présentation du projet
 
-Ce projet consiste à la mise en œuvre d’une plateforme complète de **supervision de la sécurité des systèmes d’information** basée sur **Wazuh**, combinant les approches :
+Ce projet présente la mise en œuvre d’une plateforme complète de **supervision et de protection de la sécurité des systèmes d’information**, basée sur **Wazuh**, combinant les approches **SIEM** et **EDR**.
 
-- **SIEM (Security Information and Event Management)**
-- **EDR (Endpoint Detection and Response)**
-
-L’environnement est déployé sur **AWS Learner Lab** et intègre des endpoints **Linux** et **Windows**, simulant une infrastructure d’entreprise moderne supervisée par un SOC.
-
-Ce dépôt regroupe l’ensemble des ressources du projet : documentation, configurations, captures d’écran et démonstrations de sécurité.
+L’infrastructure est déployée sur **AWS Learner Lab** et intègre des endpoints **Linux** et **Windows**, simulant un environnement d’entreprise moderne supervisé par un **SOC (Security Operations Center)**.
 
 ---
 
-## 🎯 Objectifs pédagogiques
+## 🎯 Objectifs du projet
 
-- Déployer une architecture SIEM/EDR dans le Cloud
+- Déployer une architecture SIEM/EDR fonctionnelle dans le Cloud
 - Superviser des endpoints Linux et Windows
-- Centraliser et corréler les événements de sécurité
-- Mettre en évidence les concepts de :
-  - Endpoint Security
-  - IAM / PAM
-  - Threat Hunting
+- Centraliser et analyser les événements de sécurité
+- Illustrer les concepts de Endpoint Security, IAM/PAM et Threat Hunting
 - Générer et analyser des alertes de sécurité réelles
 
 ---
 
-## 🏗️ Architecture du lab
+## 🏗️ Architecture globale du lab
 
 ### Composants
+- Wazuh Server (Ubuntu 22.04)
+- Client Linux (Ubuntu 22.04)
+- Client Windows (Windows Server)
 
-- **Wazuh Server (Ubuntu 22.04)**
-  - Wazuh Manager
-  - Wazuh Indexer
-  - Wazuh Dashboard (SIEM)
-
-- **Client Linux (Ubuntu 22.04)**
-  - Wazuh Agent
-
-- **Client Windows (Windows Server)**
-  - Wazuh Agent
-
-### Flux réseau
-
-| Service | Port | Description |
-|------|------|------------|
-| Agent communication | 1514/TCP | Logs et événements |
-| Agent enrollment | 1515/TCP | Enrôlement |
-| Dashboard | 443/TCP | Accès Web sécurisé |
-| SSH | 22/TCP | Administration Linux |
-| RDP | 3389/TCP | Administration Windows |
-
-📸 **Capture à insérer ici**  
-`screenshots/architecture.png`  
-*(Schéma VPC + instances EC2 + Security Groups)*
+📸 **Capture à insérer ici : Schéma VPC + EC2 + Security Groups**
+<img width="2816" height="1536" alt="Gemini_Generated_Image_w4it79w4it79w4it" src="https://github.com/user-attachments/assets/159a707c-cc60-4166-a1f8-61674a3f5cb0" />
 
 ---
 
-## ☁️ Déploiement AWS
+## 🌐 Flux réseau
 
-- Environnement : **AWS Learner Lab**
-- Instances EC2 :
-  - 1 × Ubuntu 22.04 (Wazuh Server)
-  - 1 × Ubuntu 22.04 (Linux Client)
-  - 1 × Windows Server (Windows Client)
-- Toutes les instances sont déployées dans :
-  - Le même VPC
-  - Le même subnet
-- Sécurité assurée par des **Security Groups restrictifs**
-
-📄 Détails complets :  
-👉 `installation/aws-setup.md`
+| Service | Port | Description |
+|------|------|------------|
+| Agent communication | 1514/TCP | Logs vers Wazuh |
+| Agent enrollment | 1515/TCP | Enrôlement |
+| Dashboard | 443/TCP | Accès Web |
+| SSH | 22/TCP | Admin Linux |
+| RDP | 3389/TCP | Admin Windows |
 
 ---
 
 ## ⚙️ Installation de Wazuh
 
-### Serveur Wazuh (All-in-One)
-
-Installation automatisée incluant :
-- Manager
-- Indexer
-- Dashboard
-
 ```bash
 curl -sO https://packages.wazuh.com/4.7/wazuh-install.sh
 sudo bash wazuh-install.sh -a
+```
+
+📸 **Capture à insérer ici : Wazuh Dashboard**
+
+---
+
+## 🧩 Déploiement des agents
+
+- Agent Linux via Dashboard
+- Agent Windows via PowerShell
+
+📸 **Capture à insérer ici : Agents actifs**
+
+---
+
+## 🚨 Démonstrations SIEM & EDR
+
+### Linux
+- SSH brute force
+- Sudo
+- File Integrity Monitoring
+
+📸 **Capture à insérer ici : Alertes Linux**
+
+### Windows
+- Failed logon (4625)
+- Création utilisateur
+- Ajout au groupe Administrators
+
+📸 **Capture à insérer ici : Alertes Windows**
+
+---
+
+## 🔎 Analyse sécurité
+
+- SIEM : centralisation et corrélation
+- EDR : surveillance endpoint
+- IAM/PAM : contrôle des accès
+
+---
+
+## 🏁 Conclusion
+
+Ce projet démontre la mise en œuvre d’un SOC moderne basé sur Wazuh, dans un environnement Cloud réaliste.
+
+---
+
+## 👤 Auteur
+**Marwane Mounir**
