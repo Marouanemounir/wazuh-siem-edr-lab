@@ -25,7 +25,6 @@ L’infrastructure est déployée sur **AWS Learner Lab** et intègre des endpoi
 - Client Linux (Ubuntu 22.04)
 - Client Windows (Windows Server)
 
-📸 **Capture à insérer ici : Schéma VPC + EC2 + Security Groups**
 <img width="2816" height="1536" alt="Gemini_Generated_Image_w4it79w4it79w4it" src="https://github.com/user-attachments/assets/159a707c-cc60-4166-a1f8-61674a3f5cb0" />
 
 ---
@@ -49,7 +48,8 @@ curl -sO https://packages.wazuh.com/4.7/wazuh-install.sh
 sudo bash wazuh-install.sh -a
 ```
 
-📸 **Capture à insérer ici : Wazuh Dashboard**
+<img width="907" height="444" alt="image" src="https://github.com/user-attachments/assets/9f1b4a76-ee34-4f12-b6c6-012a1eda9fe9" />
+
 
 ---
 
@@ -58,7 +58,8 @@ sudo bash wazuh-install.sh -a
 - Agent Linux via Dashboard
 - Agent Windows via PowerShell
 
-📸 **Capture à insérer ici : Agents actifs**
+<img width="945" height="420" alt="image" src="https://github.com/user-attachments/assets/eff31846-a337-4177-ac5a-196dac770e13" />
+
 
 ---
 
@@ -69,14 +70,16 @@ sudo bash wazuh-install.sh -a
 - Sudo
 - File Integrity Monitoring
 
-📸 **Capture à insérer ici : Alertes Linux**
+<img width="813" height="1016" alt="image" src="https://github.com/user-attachments/assets/8e2e8a3d-fae4-4c80-86c1-1d1f148a4dc0" />
+
 
 ### Windows
 - Failed logon (4625)
 - Création utilisateur
 - Ajout au groupe Administrators
 
-📸 **Capture à insérer ici : Alertes Windows**
+<img width="812" height="379" alt="image" src="https://github.com/user-attachments/assets/8398b501-f9ef-4c54-83d8-7aa10c8dddf6" />
+
 
 ---
 
@@ -95,4 +98,4 @@ Ce projet démontre la mise en œuvre d’un SOC moderne basé sur Wazuh, dans u
 ---
 
 ## 👤 Auteur
-**Marwane Mounir**
+**Marouane Mounir**
