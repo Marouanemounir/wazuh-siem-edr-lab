@@ -78,7 +78,8 @@ sudo bash wazuh-install.sh -a
 - Création utilisateur
 - Ajout au groupe Administrators
 
-<img width="812" height="379" alt="image" src="https://github.com/user-attachments/assets/8398b501-f9ef-4c54-83d8-7aa10c8dddf6" />
+<img width="803" height="617" alt="image" src="https://github.com/user-attachments/assets/60cc44bf-62cc-4ae7-8d3f-d28bb7287c52" />
+
 
 
 ---
