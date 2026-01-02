@@ -1,192 +1,88 @@
-# Cloud-Based SIEM & EDR Architecture using Wazuh  
-## Multi-OS Security Monitoring (Linux & Windows)
+# 🛡️ Wazuh SIEM & EDR Lab – Endpoint Security (Linux & Windows)
+
+## 📌 Présentation du projet
+
+Ce projet consiste à la mise en œuvre d’une plateforme complète de **supervision de la sécurité des systèmes d’information** basée sur **Wazuh**, combinant les approches :
+
+- **SIEM (Security Information and Event Management)**
+- **EDR (Endpoint Detection and Response)**
+
+L’environnement est déployé sur **AWS Learner Lab** et intègre des endpoints **Linux** et **Windows**, simulant une infrastructure d’entreprise moderne supervisée par un SOC.
+
+Ce dépôt regroupe l’ensemble des ressources du projet : documentation, configurations, captures d’écran et démonstrations de sécurité.
 
 ---
 
-## 1. Introduction
+## 🎯 Objectifs pédagogiques
 
-With the increasing adoption of Cloud computing and hybrid infrastructures, organizations are facing new security challenges related to visibility, monitoring, and incident response. Modern information systems are composed of heterogeneous environments, often mixing Linux and Windows systems deployed across on-premise and Cloud platforms.
-
-To address these challenges, security teams rely on **SIEM (Security Information and Event Management)** and **EDR (Endpoint Detection and Response)** solutions to collect, correlate, analyze, and respond to security events in real time.
-
-This project focuses on the design and implementation of a **Cloud-based security monitoring architecture** using **Wazuh**, an open-source SIEM and EDR platform. The infrastructure is deployed on **AWS Learner Lab** and monitors both **Linux and Windows endpoints**, simulating a realistic enterprise environment.
-
----
-
-## 2. Project Objectives
-
-The main objectives of this project are:
-
-- Design a secure Cloud architecture for security monitoring
-- Deploy a centralized SIEM and EDR platform
-- Monitor Linux and Windows endpoints simultaneously
-- Collect and analyze system and security logs
-- Detect security incidents related to authentication, privilege escalation, and system changes
-- Demonstrate IAM/PAM and threat detection concepts
-- Introduce basic threat hunting techniques
-- Apply Cloud security best practices (network segmentation, restricted access)
+- Déployer une architecture SIEM/EDR dans le Cloud
+- Superviser des endpoints Linux et Windows
+- Centraliser et corréler les événements de sécurité
+- Mettre en évidence les concepts de :
+  - Endpoint Security
+  - IAM / PAM
+  - Threat Hunting
+- Générer et analyser des alertes de sécurité réelles
 
 ---
 
-## 3. Global Architecture Description
+## 🏗️ Architecture du lab
 
-The lab architecture is fully deployed in **AWS** and is based on a simple but realistic design.
+### Composants
 
-### 3.1 Cloud Infrastructure
+- **Wazuh Server (Ubuntu 22.04)**
+  - Wazuh Manager
+  - Wazuh Indexer
+  - Wazuh Dashboard (SIEM)
 
-The infrastructure consists of:
-- One **VPC**
-- One **Subnet**
-- Three **EC2 instances**
-- Multiple **Security Groups** enforcing access control
+- **Client Linux (Ubuntu 22.04)**
+  - Wazuh Agent
 
-All instances are deployed in the same subnet to simplify internal communication while still enforcing strict security rules using Security Groups.
+- **Client Windows (Windows Server)**
+  - Wazuh Agent
 
-### 3.2 Architecture Components
+### Flux réseau
 
-#### 3.2.1 Wazuh Server (Ubuntu 24.04)
+| Service | Port | Description |
+|------|------|------------|
+| Agent communication | 1514/TCP | Logs et événements |
+| Agent enrollment | 1515/TCP | Enrôlement |
+| Dashboard | 443/TCP | Accès Web sécurisé |
+| SSH | 22/TCP | Administration Linux |
+| RDP | 3389/TCP | Administration Windows |
 
-This instance hosts the complete Wazuh stack:
-- **Wazuh Manager**: log collection, analysis, and correlation
-- **Wazuh Indexer**: storage and indexing of security events
-- **Wazuh Dashboard**: visualization and management interface
-
-The Wazuh server acts as the **central security brain** of the architecture.
-
-#### 3.2.2 Linux Client (Ubuntu 24.04)
-
-The Linux endpoint represents a typical server or workstation in an enterprise environment.  
-It is monitored using the **Wazuh Agent**, which collects:
-- Authentication logs
-- Privilege escalation events
-- File system integrity events
-- System activity
-
-#### 3.2.3 Windows Client (Windows Server)
-
-The Windows endpoint simulates a corporate Windows server.  
-It generates:
-- Windows Security Events
-- Authentication failures
-- User and group management events
-
-Optionally, **Sysmon** can be installed to enrich EDR telemetry with process creation and network activity.
+📸 **Capture à insérer ici**  
+`screenshots/architecture.png`  
+*(Schéma VPC + instances EC2 + Security Groups)*
 
 ---
 
-## 4. Network Design and Security
+## ☁️ Déploiement AWS
 
-Security is enforced using AWS Security Groups, following the **principle of least privilege**.
+- Environnement : **AWS Learner Lab**
+- Instances EC2 :
+  - 1 × Ubuntu 22.04 (Wazuh Server)
+  - 1 × Ubuntu 22.04 (Linux Client)
+  - 1 × Windows Server (Windows Client)
+- Toutes les instances sont déployées dans :
+  - Le même VPC
+  - Le même subnet
+- Sécurité assurée par des **Security Groups restrictifs**
 
-### 4.1 Allowed Communications
-
-| Source | Destination | Port | Purpose |
-|------|------------|------|--------|
-| Admin IP | All EC2 | 22 | SSH administration |
-| Admin IP | Windows EC2 | 3389 | RDP administration |
-| Linux Agent | Wazuh Server | 1514 | Agent communication |
-| Windows Agent | Wazuh Server | 1514 | Agent communication |
-| Agents | Wazuh Server | 1515 | Agent enrollment |
-| Admin IP | Wazuh Server | 443 / 5601 | Dashboard access |
-
-No unnecessary ports are exposed to the internet.
+📄 Détails complets :  
+👉 `installation/aws-setup.md`
 
 ---
 
-## 5. Wazuh Platform Deployment
+## ⚙️ Installation de Wazuh
 
-The Wazuh platform is installed in **All-in-One mode**, which is suitable for labs and proof-of-concept environments.
+### Serveur Wazuh (All-in-One)
 
-The installation automatically configures:
-- Manager services
+Installation automatisée incluant :
+- Manager
 - Indexer
 - Dashboard
-- Default security rules
 
-After installation, the dashboard provides:
-- Agent management
-- Security alerts
-- Threat hunting tools
-- Event visualization
-
----
-
-## 6. Agent Deployment and Monitoring
-
-### 6.1 Linux Agent
-
-The Linux agent is deployed directly from the Wazuh Dashboard using the built-in agent deployment feature.  
-Once installed, the agent immediately starts sending logs to the Wazuh server.
-
-Monitored elements include:
-- SSH authentication
-- sudo usage
-- System log files
-- File Integrity Monitoring (FIM)
-
-### 6.2 Windows Agent
-
-The Windows agent is installed using PowerShell commands generated by the Wazuh Dashboard.  
-The agent runs as a Windows service and forwards security events in real time.
-
-Collected data includes:
-- Windows Security Logs
-- Failed logon attempts
-- User and group changes
-
----
-
-## 7. Security Scenarios and Detection
-
-To validate the effectiveness of the SIEM and EDR platform, several security scenarios were executed.
-
-### 7.1 Linux SIEM Scenarios
-
-- Multiple failed SSH login attempts (brute-force simulation)
-- Privilege escalation using `sudo`
-- Modification of sensitive system files
-
-These actions generated alerts categorized as:
-- Authentication failures
-- Privilege escalation events
-- File Integrity Monitoring alerts
-
-### 7.2 Windows EDR Scenarios
-
-- Failed authentication attempts (Event ID 4625)
-- Creation of a local user account
-- Adding a user to the Administrators group
-
-These events demonstrate Wazuh’s ability to monitor **IAM and PAM-related activities**.
-
----
-
-## 8. SIEM vs EDR Analysis
-
-| SIEM | EDR |
-|----|----|
-| Centralized log collection | Endpoint-focused monitoring |
-| Event correlation | Behavioral detection |
-| Historical analysis | Near real-time response |
-| Compliance-oriented | Threat detection-oriented |
-
-Wazuh combines both approaches, providing a unified security monitoring platform.
-
----
-
-## 9. Threat Hunting
-
-Threat hunting was performed using the Wazuh Dashboard by:
-- Filtering repeated authentication failures
-- Identifying suspicious account creation
-- Reviewing high-risk system actions
-
-This proactive approach helps detect threats that may bypass traditional alerting mechanisms.
-
----
-
-## 10. Author
-
-**Marouane Mounir**  
-Engineering Student – Big Data & Cloud Computing  
-ENSET Mohammedia
+```bash
+curl -sO https://packages.wazuh.com/4.7/wazuh-install.sh
+sudo bash wazuh-install.sh -a
